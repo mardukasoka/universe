@@ -2676,27 +2676,12 @@ async function start(): Promise<void> {
     requestAnimationFrame(frame);
   }
 
-  const hooks = window as unknown as {
-    __snap: () => Promise<string>;
-    __gpuSelfTest: () => Promise<string>;
-    __setView: (yawDeg: number, pitchDeg: number, dist: number, tiltDeg?: number) => void;
-  };
+  const hooks = window as unknown as { __snap: () => Promise<string>; __gpuSelfTest: () => Promise<string> };
   hooks.__snap = () =>
     new Promise((resolve) => {
       snapResolve = resolve;
     });
   hooks.__gpuSelfTest = () => renderer.selfTest();
-  // Video-capture hook: scripts/capture-sequence.mjs walks a camera path one
-  // frame at a time (set pose → __snap), so a headless run renders frames
-  // deterministically. Units mirror the URL params: degrees and meters. Only
-  // safe at a fixed focus — a live retarget/flight would stomp the pose next
-  // frame.
-  hooks.__setView = (yawDeg, pitchDeg, dist, tiltDeg) => {
-    cam.yaw = (yawDeg * Math.PI) / 180;
-    cam.pitch = clamp((pitchDeg * Math.PI) / 180, -1.53, 1.53);
-    cam.dist = clamp(dist, MIN_DIST, MAX_DIST);
-    cam.tilt = clamp(((tiltDeg ?? 0) * Math.PI) / 180, 0, 1.5);
-  };
   requestAnimationFrame(frame);
 }
 
