@@ -1910,7 +1910,15 @@ async function start(): Promise<void> {
   // sharpness nobody perceives at arm's length). ?dpr= overrides for
   // on-device A/B — try ?dpr=1.5 on a struggling phone.
   const dprParam = parseFloat(params.get('dpr') ?? '');
-  const dpr = Number.isFinite(dprParam) ? clamp(dprParam, 0.5, 4) : Math.min(window.devicePixelRatio || 1, 2);
+  // Phones cap at 1.5 (not 2): the ground views run a 96-sample/pixel
+  // atmosphere march, and an iPhone at DPR 2 pushes 4x the pixels of DPR 1
+  // through it (user-reported lag on an iPhone 12, worst at the ground).
+  // 1.5 is visually close on a ~6" screen and nearly halves the fill cost.
+  // ?dpr= still overrides in either direction.
+  const isPhone = navigator.maxTouchPoints > 0 && Math.min(screen.width, screen.height) < 900;
+  const dpr = Number.isFinite(dprParam)
+    ? clamp(dprParam, 0.5, 4)
+    : Math.min(window.devicePixelRatio || 1, isPhone ? 1.5 : 2);
   const doResize = () =>
     renderer.resize(
       Math.max(1, Math.floor(canvas.clientWidth * dpr)),
@@ -2668,12 +2676,27 @@ async function start(): Promise<void> {
     requestAnimationFrame(frame);
   }
 
-  const hooks = window as unknown as { __snap: () => Promise<string>; __gpuSelfTest: () => Promise<string> };
+  const hooks = window as unknown as {
+    __snap: () => Promise<string>;
+    __gpuSelfTest: () => Promise<string>;
+    __setView: (yawDeg: number, pitchDeg: number, dist: number, tiltDeg?: number) => void;
+  };
   hooks.__snap = () =>
     new Promise((resolve) => {
       snapResolve = resolve;
     });
   hooks.__gpuSelfTest = () => renderer.selfTest();
+  // Video-capture hook: scripts/capture-sequence.mjs walks a camera path one
+  // frame at a time (set pose → __snap), so a headless run renders frames
+  // deterministically. Units mirror the URL params: degrees and meters. Only
+  // safe at a fixed focus — a live retarget/flight would stomp the pose next
+  // frame.
+  hooks.__setView = (yawDeg, pitchDeg, dist, tiltDeg) => {
+    cam.yaw = (yawDeg * Math.PI) / 180;
+    cam.pitch = clamp((pitchDeg * Math.PI) / 180, -1.53, 1.53);
+    cam.dist = clamp(dist, MIN_DIST, MAX_DIST);
+    cam.tilt = clamp(((tiltDeg ?? 0) * Math.PI) / 180, 0, 1.5);
+  };
   requestAnimationFrame(frame);
 }
 
