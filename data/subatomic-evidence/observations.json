@@ -1,0 +1,71 @@
+{
+  "schema_version": "0.1",
+  "scope": "Cross-scale quantum evidence; not a nuclide dataset",
+  "records": [
+    {
+      "id": "QO-001",
+      "name": "Two- and three-photon bound states",
+      "kind": "few-body photonic bound state",
+      "status": "experimental",
+      "links": [
+        "Rydberg atomic media",
+        "effective photon interactions",
+        "photon correlations"
+      ],
+      "caution": "Bound photons do not by themselves establish superfluidity.",
+      "source": "https://www.nature.com/articles/nature25776"
+    },
+    {
+      "id": "QO-002",
+      "name": "Anomalous and negative group velocity",
+      "kind": "optical dispersion",
+      "status": "experimental",
+      "links": [
+        "pulse reshaping",
+        "group velocity",
+        "causality"
+      ],
+      "caution": "Pulse advancement does not demonstrate superluminal information transfer.",
+      "source": "https://doi.org/10.1038/35018520"
+    },
+    {
+      "id": "QM-001",
+      "name": "Supersolid exciton-polariton condensates",
+      "kind": "collective light-matter phase",
+      "status": "literature verification pending",
+      "links": [
+        "Bose condensation",
+        "spatial density order",
+        "phase coherence"
+      ],
+      "caution": "Polaritons are hybrid light-matter quasiparticles; supersolidity is not produced merely by increasing entangled photon count.",
+      "source": null
+    },
+    {
+      "id": "QM-002",
+      "name": "Electronic bound states in the continuum in a metal",
+      "kind": "electronic localization",
+      "status": "literature verification pending",
+      "links": [
+        "destructive interference",
+        "crystal band structure",
+        "localized electronic states"
+      ],
+      "caution": "Not a new elementary particle or direct Planck-scale probe.",
+      "source": "https://doi.org/10.1126/science.adt9825"
+    },
+    {
+      "id": "QS-001",
+      "name": "Fourier-limited optical transition of surface-adsorbed molecule",
+      "kind": "precision molecular spectroscopy",
+      "status": "literature verification pending",
+      "links": [
+        "coherence",
+        "linewidth",
+        "single molecule spectroscopy"
+      ],
+      "caution": "Narrow energy linewidth is not spatial resolution.",
+      "source": "https://doi.org/10.1126/science.aeg5014"
+    }
+  ]
+}
