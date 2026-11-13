@@ -1,0 +1,46 @@
+# Stellar Seeds, Remnants and Transition Questions
+Updated: 2026-11-13
+Research register. ESTABLISHED = supported by standard physics and observations; OPEN = unresolved or model-dependent; SPECULATIVE = lacks established observational support or requires additional physics.
+
+## Formation of stars and planets
+* ESTABLISHED: Cold molecular-cloud cores collapse and fragment; rotation, turbulence, magnetic fields and accretion shape protostars and disks.
+* ESTABLISHED: T Tauri and Herbig Ae/Be stars are young pre-main-sequence objects; Herbig-Haro objects trace shocks from jets, not a class of star; proplyds are protoplanetary disks.
+* OPEN: What is the lowest mass obtainable through direct cloud fragmentation under different cooling, metallicity and magnetic-field conditions?
+* OPEN: How did Orion's candidate Jupiter-mass binary objects (JuMBOs) form? Their masses, binary nature and formation mechanisms need continued scrutiny.
+* ESTABLISHED: Multiple-star systems form; Castor is a hierarchical six-star system.
+* OPEN: How do fragmentation, angular momentum and available gas determine single, binary and higher-order systems versus substellar companions?
+
+## Mass, fusion and classification
+* ESTABLISHED: Sustained hydrogen fusion generally begins near 75–80 Jupiter masses; deuterium burning may occur near 13 Jupiter masses, but neither is a universal formation-history boundary.
+* ESTABLISHED: Late-M, L, T and Y are spectral/atmospheric classes, not four distinct fusion stages. Lithium burning occurs in some sufficiently massive brown dwarfs.
+* OPEN: Can disk-born planetary objects gain enough mass to cross substellar or stellar thresholds, and how often does this occur?
+* ESTABLISHED: Brown dwarfs and giant planets can have similar masses while forming through different pathways.
+
+## Planetary engulfment and stellar envelopes
+* ESTABLISHED: Giant planets contain hydrogen-helium envelopes; Jupiter has electrically conducting metallic hydrogen and probably a dilute heavy-element core.
+* ESTABLISHED: Magnetic fields can alter charged-particle interactions but cannot block radiation, tidal forces or hydrodynamic drag inside a stellar envelope.
+* OPEN: Do magnetic fields significantly change the stripping and survival boundary for planets engulfed by red giants?
+* OPEN: Can an engulfed giant leave a bound heavy-element remnant, or is it dispersed into the stellar envelope?
+* ESTABLISHED: Planets orbit white dwarfs and neutron stars. Their existence does not prove they survived inside their progenitor stars.
+* OPEN: Which pulsar planets survived stellar death, and which formed from fallback or transferred material afterward?
+
+## Stellar remnants and compact-object transitions
+* ESTABLISHED: White dwarfs are exposed, electron-degenerate stellar cores; novae and micronovae occur on already existing accreting white dwarfs.
+* ESTABLISHED: White dwarfs cool; black dwarfs are hypothetical ultra-cold white dwarfs, not yet produced by ordinary evolution in the 13.8-billion-year-old universe.
+* ESTABLISHED: Brown dwarfs also cool, but do not become white dwarfs through cooling alone.
+* ESTABLISHED: Neutron-star formation involves collapse and electron capture through the weak interaction; the strong interaction remains important.
+* OPEN: What is the exact maximum stable neutron-star mass for different equations of state, temperatures and rotations?
+* OPEN: Which objects in the lower compact-object mass gap are neutron stars or black holes?
+* ESTABLISHED: A neutron star may collapse after gaining mass or losing rotational support; stellar-mass black holes do not evaporate back into neutron stars through Hawking radiation.
+* OPEN: Can an isolated asymmetric neutron-star collapse produce a distinctive gravitational-wave burst and ringdown, distinguishable from merger signals?
+* SPECULATIVE: A novel 'spacetime squeezed out of matter' mechanism; no established evidence or quantitative theory currently supports this proposal.
+
+## Stars within stars and cosmic futures
+* ESTABLISHED: Common-envelope evolution can place a companion inside a giant's envelope and drive inspiral.
+* OPEN: Do long-lived Thorne–Żytkow objects, with neutron-star cores inside giant envelopes, exist observationally? Candidate identifications remain disputed.
+* OPEN: Did quasi-stars with embedded accreting black holes exist in the early universe?
+* OPEN: How did the first Population III stars form and die, and what mass distribution did they have?
+* SPECULATIVE: Intact black dwarfs surviving a prior Big Crunch or cosmic cycle; no established observational or dynamical support.
+
+## Method
+Keep observational detections, numerical predictions and speculative hypotheses separately labelled. Record object masses with uncertainties, observation dates, formation pathways, equations of state, and proposed electromagnetic, neutrino and gravitational-wave diagnostics. Do not infer that a mass threshold alone establishes an object's origin.
