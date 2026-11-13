@@ -44,3 +44,6 @@ Research register. ESTABLISHED = supported by standard physics and observations;
 
 ## Method
 Keep observational detections, numerical predictions and speculative hypotheses separately labelled. Record object masses with uncertainties, observation dates, formation pathways, equations of state, and proposed electromagnetic, neutrino and gravitational-wave diagnostics. Do not infer that a mass threshold alone establishes an object's origin.
+
+## Related independent research resource
+=> https://mardukasoka.github.io/lattice-ai-evolution/standalone/computing-ai-evolution/ Computing and AI Evolution Matrix (standalone; no runtime dependency)
