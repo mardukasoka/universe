@@ -1,0 +1,12 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import { importCatalogue, normalizeObservation } from "./jupiter-observation-import.mjs";
+const good = {archive:"MAST",product_id:"example-not-real",product_uri:"https://archive.example/product",source_url:"https://archive.example/record",observer:"JWST",instrument:"NIRCam",start_utc:"2026-02-20T01:00:00Z",mid_utc:"2026-02-20T01:00:30Z",end_utc:"2026-02-20T01:01:00Z"};
+test("valid archive metadata never claims verified geometry",()=>{const o=normalizeObservation(good);assert.equal(o.geometry_status,"unverified");assert.equal(o.camera_quaternion,null);});
+test("missing time",()=>assert.throws(()=>normalizeObservation({...good,mid_utc:null})));
+test("reversed interval",()=>assert.throws(()=>normalizeObservation({...good,end_utc:"2026-02-19T01:00:00Z"})));
+test("timezone ambiguity",()=>assert.throws(()=>normalizeObservation({...good,start_utc:"2026-02-20T01:00:00"})));
+test("invalid calendar date",()=>assert.throws(()=>normalizeObservation({...good,start_utc:"2026-02-30T01:00:00Z"})));
+test("missing source",()=>assert.throws(()=>normalizeObservation({...good,source_url:null})));
+test("duplicate IDs",()=>assert.throws(()=>importCatalogue([good,good])));
+test("different filters preserve independent products",()=>assert.equal(importCatalogue([good,{...good,product_id:"second",filter:"F200W"}]).length,2));
