@@ -38,5 +38,23 @@ def test_nonoverlap_fails(tmp_path):
     source, reference, output = [tmp_path / x for x in ("src.fits", "ref.fits", "out.fits")]
     make_image(source, ra=120)
     make_image(reference, ra=220)
-    with pytest.raises(ValueError, match="no overlapping sky coverage"):
+    with pytest.raises(ValueError, match="(?i)no overlapping sky coverage"):
         module.align(source, reference, output)
+
+
+def test_shifted_wcs_preserves_constant_flux_surface_brightness(tmp_path):
+    source, reference, output = [tmp_path / x for x in ("src.fits", "ref.fits", "out.fits")]
+    make_image(source, ra=120.0)
+    make_image(reference, ra=120.01)
+    stats = module.align(source, reference, output)
+    with fits.open(output) as h:
+        valid = (h["FOOTPRINT"].data > 0) & np.isfinite(h[0].data)
+        assert 0 < stats["covered_pixels"] < stats["total_pixels"]
+        np.testing.assert_allclose(h[0].data[valid], 1.0, atol=1e-5)
+
+
+def test_missing_celestial_wcs_rejected(tmp_path):
+    source = tmp_path / "invalid.fits"
+    fits.PrimaryHDU(data=np.ones((16, 16))).writeto(source)
+    with pytest.raises(ValueError, match="No 2D celestial image"):
+        module.read_celestial_image(source)
