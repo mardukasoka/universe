@@ -4,7 +4,9 @@ Usage: python scripts/validate_webb_fits.py jwst_i2d.fits --output validation.js
 Passing metadata checks is NOT astrometric, photometric or SPICE validation.
 """
 import argparse
+import hashlib
 import json
+from datetime import datetime, timezone
 from pathlib import Path
 
 
@@ -14,6 +16,10 @@ def validate(path):
     from astropy.wcs import WCS
 
     path = Path(path)
+    digest = hashlib.sha256()
+    with path.open('rb') as stream:
+        for chunk in iter(lambda: stream.read(1024 * 1024), b''):
+            digest.update(chunk)
     with fits.open(path, memmap=True) as hdus:
         primary = hdus[0].header
         science = next((h for h in hdus if h.name == "SCI" and h.data is not None), None)
@@ -37,6 +43,12 @@ def validate(path):
             raise ValueError("Missing DATE-OBS and MJD-AVG")
         return {
             "file": path.name,
+            "sha256": digest.hexdigest(),
+            "file_size_bytes": path.stat().st_size,
+            "validated_at_utc": datetime.now(timezone.utc).isoformat(),
+            "cal_ver": primary.get("CAL_VER"),
+            "crds_ctx": primary.get("CRDS_CTX"),
+            "asn_id": primary.get("ASN_ID"),
             "status": "metadata_gate_passed_not_astrometrically_validated",
             "telescope": primary.get("TELESCOP"),
             "instrument": primary.get("INSTRUME"),
