@@ -1,5 +1,14 @@
 name: FITS reprojection and provenance tests
 on:
+  push:
+    branches:
+      - feature/webb-sky-reprojection-spike
+    paths:
+      - 'scripts/reproject_sky_fits.py'
+      - 'scripts/validate_webb_fits.py'
+      - 'tests/test_reproject_sky_fits.py'
+      - 'tests/test_validate_webb_fits.py'
+      - '.github/workflows/fits-reprojection-tests.yml'
   pull_request:
     paths:
       - 'scripts/reproject_sky_fits.py'
