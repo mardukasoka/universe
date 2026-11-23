@@ -57,3 +57,32 @@ def test_reject_invalid_metadata(tmp_path, changes, expected):
     fixture(path, **changes)
     with pytest.raises(ValueError, match=expected):
         validator.validate(path)
+
+
+def test_reject_missing_science_extension(tmp_path):
+    path = tmp_path / "missing_sci.fits"
+    fits.PrimaryHDU().writeto(path)
+    with pytest.raises(ValueError, match="Missing SCI image extension"):
+        validator.validate(path)
+
+
+def test_reject_three_dimensional_science_image(tmp_path):
+    path = tmp_path / "cube.fits"
+    fixture(path)
+    with fits.open(path, mode="update") as hdus:
+        hdus["SCI"].data = np.ones((2, 16, 16), dtype=np.float32)
+        hdus.flush()
+    with pytest.raises(ValueError, match="2-D image"):
+        validator.validate(path)
+
+
+def test_accept_mjd_avg_without_date_obs(tmp_path):
+    path = tmp_path / "mjd_only.fits"
+    fixture(path, timestamp=False)
+    with fits.open(path, mode="update") as hdus:
+        hdus[0].header["MJD-AVG"] = 61041.0
+        hdus.flush()
+    result = validator.validate(path)
+    assert result["date_obs"] is None
+    assert result["mjd_avg"] == 61041.0
+    assert result["status"] == "metadata_gate_passed_not_astrometrically_validated"
