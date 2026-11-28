@@ -58,3 +58,23 @@ def test_missing_celestial_wcs_rejected(tmp_path):
     fits.PrimaryHDU(data=np.ones((16, 16))).writeto(source)
     with pytest.raises(ValueError, match="No 2D celestial image"):
         module.read_celestial_image(source)
+
+
+def test_science_plane_preferred_over_ancillary(tmp_path):
+    path = tmp_path / "multi.fits"
+    make_image(path)
+    with fits.open(path, mode="update") as h:
+        header = h[0].header.copy()
+        h.append(fits.ImageHDU(data=np.full((32, 32), 9.0), header=header, name="ERR"))
+        h.append(fits.ImageHDU(data=np.full((32, 32), 3.0), header=header, name="SCI"))
+    data, _ = module.read_celestial_image(path)
+    np.testing.assert_allclose(data, 3.0)
+
+
+def test_invalid_science_plane_does_not_fall_back(tmp_path):
+    path = tmp_path / "invalid_sci.fits"
+    make_image(path)
+    with fits.open(path, mode="update") as h:
+        h.append(fits.ImageHDU(data=np.ones((32, 32)), name="SCI"))
+    with pytest.raises(ValueError, match="No 2D celestial image"):
+        module.read_celestial_image(path)
