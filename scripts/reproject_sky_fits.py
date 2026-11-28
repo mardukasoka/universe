@@ -13,9 +13,11 @@ from astropy.wcs import WCS
 from reproject import reproject_interp
 
 
-def read_celestial_image(path):
+def read_celestial_image(path, extension=None):
     with fits.open(path, memmap=False) as hdul:
-        for hdu in hdul:
+        # Prefer the named science plane; never fall back if it is invalid.
+        selected = extension if extension is not None else ("SCI" if "SCI" in hdul else 0)
+        for hdu in [hdul[selected]]:
             if hdu.data is None or np.ndim(hdu.data) != 2:
                 continue
             wcs = WCS(hdu.header)
@@ -25,9 +27,9 @@ def read_celestial_image(path):
     raise ValueError(f"No 2D celestial image with usable WCS: {path}")
 
 
-def align(source, reference, output):
-    src_data, src_wcs = read_celestial_image(source)
-    ref_data, ref_wcs = read_celestial_image(reference)
+def align(source, reference, output, source_extension=None, reference_extension=None):
+    src_data, src_wcs = read_celestial_image(source, source_extension)
+    ref_data, ref_wcs = read_celestial_image(reference, reference_extension)
     aligned, footprint = reproject_interp(
         (src_data, src_wcs), ref_wcs, shape_out=ref_data.shape,
         return_footprint=True,
@@ -51,5 +53,7 @@ if __name__ == "__main__":
     p.add_argument("source")
     p.add_argument("reference")
     p.add_argument("output")
+    p.add_argument("--source-extension", help="Named source science HDU")
+    p.add_argument("--reference-extension", help="Named reference science HDU")
     a = p.parse_args()
-    print(align(a.source, a.reference, a.output))
+    print(align(a.source, a.reference, a.output, a.source_extension, a.reference_extension))
